@@ -1,0 +1,311 @@
+@use "sass:color";
+
+$button-font-size: 18px;
+$breakpoint: 992px;
+
+@mixin rounded-form-element($scale: 1) {
+  border: none;
+  border-radius: 2 * $button-font-size * $scale;
+  padding: 0.5 * $button-font-size * $scale * $scale;
+  font-size: $button-font-size * $scale;
+}
+
+@mixin color($element: "") {
+  @if ($element == "button") {
+    background-color: var(--dark);
+    color: var(--light);
+  } @else {
+    background-color: var(--light);
+    color: var(--dark);
+  }
+}
+
+@mixin button($scale: 1) {
+  @include rounded-form-element($scale: 1);
+  @include color("button");
+  height: 2 * $button-font-size * $scale;
+}
+
+@mixin input($scale: 1) {
+  @include rounded-form-element($scale: 1);
+  @include color("input");
+  height: 2 * $button-font-size * $scale;
+}
+
+:root {
+  --light-blue-backup: rgb(204, 238, 255);
+  --light-blue: rgba(204, 238, 255, 1);
+  --light-purple: rgba(230, 213, 236, 1);
+  --pink: rgba(255, 188, 217, 1);
+
+  --dark: #262626;
+  --light: #f5f5f5;
+
+  --red: #dc2626;
+  --green: #16a34a;
+  --blue: #1e40af;
+
+  --transition-duration: 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  color: var(--dark);
+}
+
+.background {
+  --middle-point: 50%;
+
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  min-height: 100vh;
+
+  background: var(--blue-backup);
+  background: -moz-linear-gradient(
+    -45deg,
+    var(--light-blue) 0%,
+    var(--light-purple) var(--middle-point),
+    var(--pink) 100%
+  );
+  background: -webkit-linear-gradient(
+    -45deg,
+    var(--light-blue) 0%,
+    var(--light-purple) var(--middle-point),
+    var(--pink) 100%
+  );
+  background: linear-gradient(
+    -45deg,
+    var(--light-blue) 0%,
+    var(--light-purple) var(--middle-point),
+    var(--pink) 100%
+  );
+  // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#cceeff", endColorstr="#ffbcd9", GradientType=1);
+}
+
+a {
+  color: var(--blue);
+
+  &:hover {
+    color: var(--red);
+  }
+
+  &:visited {
+    color: var(--green);
+  }
+}
+
+.app {
+  width: 90vw;
+
+  @media (min-width: $breakpoint) {
+    width: 70vw;
+  }
+
+  &__element-container {
+    padding: 0.5 * $button-font-size 0;
+
+    &_buttons {
+      display: flex;
+      flex-direction: column;
+
+      & > * {
+        margin-bottom: $button-font-size;
+        width: 100%;
+      }
+    }
+
+    &_align-right {
+      position: absolute;
+      right: 0;
+    }
+
+    &_position-relative {
+      position: relative;
+    }
+
+    @media (min-width: $breakpoint) {
+      display: block;
+
+      * {
+        width: fit-content;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__button {
+    @include button();
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color var(--transition-duration);
+
+    i {
+      display: inline;
+    }
+
+    &:hover {
+      background-color: var(--blue);
+    }
+
+    &_margin-right {
+      margin-right: $button-font-size;
+    }
+
+    &_position-absolute {
+      position: absolute;
+      right: 0.5 * $button-font-size;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &_delete-contact,
+    &_delete-field {
+      scale: 0.7;
+    }
+
+    &_delete-contact,
+    &_delete-field {
+      background-color: var(--red);
+    }
+
+    &_add-field {
+      background-color: var(--green);
+
+      &_small,
+      &_close_small {
+        position: absolute;
+        scale: 0.65;
+      }
+
+      &_small {
+        right: 1.5 * $button-font-size;
+        background-color: var(--green);
+      }
+
+      &_close_small {
+        right: 0;
+      }
+
+      &_close,
+      &_close_small {
+        background-color: var(--red);
+        aspect-ratio: 1/1;
+      }
+
+      &_address,
+      &_phone,
+      &_email,
+      &_telegram,
+      &_vk {
+        background-color: var(--green);
+        margin-right: 0.5 * $button-font-size;
+      }
+
+      &_address,
+      &_close {
+        aspect-ratio: 1/1;
+      }
+    }
+  }
+
+  &__input {
+    @include input(1.5);
+    width: 100%;
+
+    &::placeholder {
+      color: var(--dark);
+      opacity: 0.2;
+    }
+
+    &:focus::placeholder {
+      opacity: 0;
+    }
+
+    &_add-field {
+      height: 2 * $button-font-size;
+      border: 3px solid var(--dark);
+    }
+  }
+
+  &__result {
+    @include rounded-form-element(1.5);
+    @include color();
+    margin-top: 0.5 * $button-font-size;
+    min-height: fit-content;
+    max-height: 50vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__contact {
+    display: grid;
+    border-bottom: 3px dotted var(--dark);
+    padding: 0.5 * $button-font-size 0;
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    @media (min-width: $breakpoint) {
+      grid-template-columns: 3fr 5fr;
+      align-items: center;
+    }
+  }
+
+  &__contact-name {
+    margin: 0 auto 0.5 * $button-font-size;
+
+    span {
+      border: 3px solid var(--dark);
+      border-radius: 0.5 * $button-font-size;
+      padding: 0.2 * $button-font-size;
+      width: fit-content;
+      display: inline-block;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (min-width: $breakpoint) {
+      margin-bottom: 0;
+    }
+  }
+
+  &__contact-field {
+    display: grid;
+    grid-template-columns: 4 * $button-font-size auto;
+    align-items: center;
+  }
+
+  &__contact-field-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__contact-field-class {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3 * $button-font-size;
+  }
+
+  &__contact-add-field-buttons-container {
+    position: relative;
+    display: flex;
+    justify-content: end;
+  }
+}

@@ -1,0 +1,1 @@
+Переписанная на jQuery версия [проекта](https://github.com/yurisdraughts/contact-manager), сделанного на Vue.

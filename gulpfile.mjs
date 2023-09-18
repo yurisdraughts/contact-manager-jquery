@@ -25,7 +25,7 @@ async function startWatchers() {
 async function startServer() {
   browserSyncInstance.init({ server: "./" });
   browserSyncInstance
-    .watch([globs.sass.src])
+    .watch(["./index.html", "./assets/"])
     .on("change", browserSyncInstance.reload);
 }
 
